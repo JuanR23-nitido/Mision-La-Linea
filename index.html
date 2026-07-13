@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Misión La Línea</title>
+
+    <style>
+         #mensajeTunel{
+            position:absolute;
+            top:120px;
+            left:50%;
+            transform:translateX(-50%);
+            background:rgba(0,0,0,0.8);
+            color:white;
+            padding:15px 30px;
+            border-radius:10px;
+            font-size:28px;
+            font-weight:bold;
+            display:none;
+            z-index:2000;
+        }
+           #hud{
+           position:absolute;
+           top:70px;
+           left:15px;
+           background:rgba(0,0,0,0.65);
+           padding:15px;
+           border-radius:12px;
+           color:white;
+           z-index:1000;
+           }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+        height:100vh;
+        overflow:hidden;
+        background:#111;
+        }
+
+        #menu{
+        position:absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        text-align:center;
+        background:rgba(0,0,0,0.75);
+        padding:40px;
+        border-radius:20px;
+        color:white;
+        width:700px;
+        box-shadow:0 0 25px rgba(0,0,0,0.5);
+        z-index:9999;
+        }
+
+        h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        p {
+            margin-bottom: 30px;
+            font-size: 20px;
+        }
+
+        button {
+            display: block;
+            width: 250px;
+            margin: 10px auto;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Tu CSS actual */
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        /* NUEVO CSS */
+
+        #game {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #road {
+            position: relative;
+            width: 420px;
+            height: 100vh;
+            background: #555;
+            overflow: hidden;
+            border-left: 10px solid white;
+            border-right: 10px solid white;
+            z-index:10;
+        }
+
+        .linea {
+            position: absolute;
+            width: 6px;
+            height: 100%;
+            background:
+                repeating-linear-gradient(white 0px,
+                    white 40px,
+                    transparent 40px,
+                    transparent 80px);
+
+            animation: moverCarretera 0.5s linear infinite;
+        }
+
+        @keyframes moverCarretera {
+
+            from {
+                background-position-y: 0px;
+            }
+
+            to {
+                background-position-y: 80px;
+            }
+
+        }
+
+        .linea1 {
+            left: 140px;
+        }
+
+        .linea2 {
+            left: 280px;
+        }
+
+
+
+#player{
+    position:absolute;
+
+    width:90px;
+    height:160px;
+
+    bottom:50px;
+    left:175px;
+
+    background-image:url("dt175.png");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+
+    background-color:transparent;
+    border:none;
+}
+
+    .truck{
+    position:absolute;
+    width:120px;
+    height:220px;
+}
+ 
+        .lucesTunel::after{
+        background:white;
+        box-shadow:
+        50px 0 white,
+        0 0 20px white,
+        50px 0 20px white;
+        }
+        .truck{
+        background:
+        repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 20px,
+        rgba(255,255,255,0.15) 20px,
+        rgba(255,255,255,0.15) 24px
+        );
+        }
+        .coin {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: gold;
+            border: 3px solid #ffd700;
+            top: -50px;
+        }
+        #overlayTunel{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:black;
+        opacity:0;
+        pointer-events:none;
+        transition:0.8s;
+        z-index:500;
+        }
+        #tunelEntrada{
+        position:absolute;
+       width:100%;
+       height:180px;
+       background:#444;
+       top:-250px;
+       left:0;
+       z-index:20;
+       border-bottom:10px solid #222;
+       }
+        #alertaCamion{
+        position:absolute;
+        top:180px;
+        left:50%;
+        transform:translateX(-50%);
+        background:#c62828;
+        color:white;
+        padding:15px 30px;
+        border-radius:10px;
+        font-size:24px;
+        font-weight:bold;
+        display:none;
+        z-index:3000;
+        }
+    .policia{
+    position:absolute;
+
+    width:100px;
+    height:140px;
+
+    background-image:url("policia.png");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+
+    background-color:transparent;
+
+    top:-100px;
+}
+    .arbol{
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    background-image:url("arbol.png");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+
+    background-color:transparent;
+}
+    .derrumbe{
+    position:absolute;
+
+    width:140px;
+    height:80px;
+
+    background-image:url("derrumbe.png");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+
+    background-color:transparent;
+}
+        .cartel{
+        position:absolute;
+        width:160px;
+        height:80px;
+        background:white;
+        color:black;
+        font-weight:bold;
+        text-align:center;
+        padding-top:10px;
+        border:3px solid black;
+        top:-80px;
+        }
+    .ghostTruck{
+    position:absolute;
+
+    width:180px;
+    height:300px;
+
+    background-image:url("ghosttruck.png");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+
+    background-color:transparent;
+
+    top:-250px;
+}
+
+.alertaLateral{
+    position:fixed;
+    width:150px;
+    height:60px;
+    background:#c62828;
+    color:white;
+    font-weight:bold;
+    text-align:center;
+    padding-top:15px;
+    border-radius:10px;
+    border:3px solid white;
+    z-index:3000;
+}
+
+@keyframes parpadeo{
+
+    0%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:0.2;
+    }
+
+    100%{
+        opacity:1;
+    }
+
+}
+
+.bosqueLado{
+    position:absolute;
+    top:0;
+    width:50%;
+    height:100vh;
+    background-image:url("bosque.jpg");
+    background-size:cover;
+    background-position:center;
+    z-index:1;
+}
+
+#bosqueIzq{
+    left:0;
+}
+
+#bosqueDer{
+    right:0;
+}
+
+#vidaBoss{
+    position:fixed;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    display:none;
+    z-index:99999;
+}
+
+#nombreBoss{
+    color:white;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:8px;
+    text-shadow:0 0 10px red;
+}
+
+#barraBoss{
+    width:300px;
+    height:20px;
+    background:#222;
+    border:3px solid white;
+    border-radius:8px;
+    overflow:hidden;
+}
+
+#vidaBossFill{
+    width:100%;
+    height:100%;
+    background:#c62828;
+    transition:0.3s;
+}
+@keyframes sacudir{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-5px);
+    }
+
+    50%{
+        transform:translateX(5px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
+
+}
+
+    </style>
+</head>
+
+<body>
+
+<div id="overlayTunel"></div>
+
+    <div id="menu">
+
+        <h1>Misión La Línea</h1>
+
+        <p>
+            Sobrevive a las tractomulas, cruza los túneles
+            y conviértete en la leyenda de La Línea.
+        </p>
+
+        <button id="btnJugar">Jugar</button>
+
+        <button id="btnTienda">Tienda</button>
+
+        <button>Récords</button>
+
+    </div>
+<div id="victoria"
+style="display:none;text-align:center;color:white;">
+
+    <h1>¡MISIÓN COMPLETADA!</h1>
+
+    <h2>Has cruzado el Túnel de La Línea</h2>
+
+    <p>
+        Tiempo sobrevivido:
+        <span id="tiempoFinal"></span>s
+    </p>
+
+    <p>
+        Monedas recogidas:
+        <span id="monedasFinal"></span>
+    </p>
+
+    <button onclick="location.reload()">
+        Volver al menú
+    </button>
+
+</div>
+</div>
+<div id="bosqueIzq" class="bosqueLado"></div>
+<div id="bosqueDer" class="bosqueLado"></div>
+    <div id="game">
+        <div id="hud">
+            <div id="vidaBoss">
+
+    <div id="nombreBoss">
+        GHOST TRUCK
+    </div>
+
+    <div id="barraBoss">
+    <div id="vidaBossFill"></div>
+</div>
+
+<div>
+    KM: <span id="km">0</span>
+</div>
+
+</div> <!-- cierre de vidaBoss -->
+            <div id="mensajeTunel"></div>
+            <div id="alertaCamion"></div>
+            <div>Tiempo: <span id="tiempo">0</span>s</div>
+            <div>Velocidad: <span id="velocidad">5</span></div>
+            <div>Monedas: <span id="monedas">0</span></div>
+            <div>Récord: <span id="record">0</span>s</div>
+        </div>
+        <div id="road">
+            <div id="tunelEntrada"></div>
+            <div id="player"></div>
+
+            <div class="linea linea1"></div>
+            <div class="linea linea2"></div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const btnJugar = document.getElementById("btnJugar");
+        const btnTienda = document.getElementById("btnTienda");
+        btnTienda.addEventListener("click", abrirTienda);
+        const menu = document.getElementById("menu");
+        const game = document.getElementById("game");
+        const player = document.getElementById("player");
+        const road = document.getElementById("road");
+        const tiempoTexto = document.getElementById("tiempo");
+        const velocidadTexto = document.getElementById("velocidad");
+        const lineas = document.querySelectorAll(".linea");
+        const monedasTexto = document.getElementById("monedas");
+        const mensajeTunel = document.getElementById("mensajeTunel");
+        const overlayTunel = document.getElementById("overlayTunel");
+        const tunelEntrada = document.getElementById("tunelEntrada");
+        const alertaCamion = document.getElementById("alertaCamion");
+        const recordTexto = document.getElementById("record");
+        const vidaBossFill = document.getElementById("vidaBossFill");
+        const vidaBoss = document.getElementById("vidaBoss");
+        const sonidoTunel = new Audio("tunel.mp3");
+        sonidoTunel.loop = true;
+        const kmTexto = document.getElementById("km");
+
+        let curvaActiva = false;
+        let tiempo = 0;
+        let cronometro;
+        let km = (tiempo / 8).toFixed(1);
+        kmTexto.textContent = km;
+        let truck;
+        let velocidadTruck = 10;
+        let carril = 1;
+        let monedas =
+        Number(localStorage.getItem("monedas")) || 0;
+        const sonidoDT =
+        new Audio("dt175.mp3");
+
+        const sonidoCrypton =
+        new Audio("crypton.mp3");
+
+        const sonidoMT09 =
+        new Audio("mt09.mp3");
+
+        const sonidoTruck =
+        new Audio("truck.mp3");
+        sonidoDT.loop = true;
+        sonidoCrypton.loop = true;
+        sonidoMT09.loop = true;
+        let sonidoMotor =
+        sonidoDT;
+        let record =
+        Number(localStorage.getItem("record")) || 0;
+
+        recordTexto.textContent =
+        record;
+
+        monedasTexto.textContent = monedas;
+        let moneda;
+        let policia;
+        let arbol;
+        let derrumbe;
+        let peleaGhost = false;
+        let ghostDerrotado = false;
+        let ghostTruck;
+        let direccionGhost = "arriba";
+        let ataquesGhost = 0;
+        let ghostBajando = false;
+        let enTunel = false;
+        let juegoTerminado = false;
+        let distanciaFinal = 120;
+        let motoActual =
+        localStorage.getItem("motoActual")
+        || "dt175";
+        if(motoActual === "crypton"){
+        sonidoMotor = sonidoCrypton;
+        }
+        if(motoActual === "mt09"){
+        sonidoMotor = sonidoMT09;
+        }
+        let cryptonComprada =
+        localStorage.getItem("cryptonComprada") === "si";
+        let mt09Comprada =
+        localStorage.getItem("mt09Comprada") === "si";
+        const posiciones = [
+            55,
+            175,
+            295
+        ];
+
+        btnJugar.addEventListener("click", () => {
+
+        sonidoMotor.volume = 0.1;
+
+        sonidoMotor.play();
+            menu.style.display = "none";
+            game.style.display = "flex";
+            if(motoActual === "dt175"){
+
+    player.style.backgroundImage =
+    'url("dt175.png")';
+
+}
+
+if(motoActual === "crypton"){
+
+    player.style.backgroundImage =
+    'url("crypton110.png")';
+
+}
+
+if(motoActual === "mt09"){
+
+    player.style.backgroundImage =
+    'url("mt09.png")';
+
+}
+            crearTruck();
+            crearMoneda();
+            
+setTimeout(() => {
+
+    crearArbol();
+
+},15000);    
+setTimeout(() => {
+
+    crearDerrumbe();
+
+},30000);        
+setTimeout(() => {
+
+    crearPolicia();
+
+},20000);
+setInterval(() => {
+
+    if(!peleaGhost){
+
+        
+
+    }
+
+},800);
+
+            cronometro = setInterval(() => {
+
+            tiempo++;
+
+            let km = (tiempo / 8).toFixed(1);
+
+            kmTexto.textContent = km;
+
+if(tiempo === 30){
+
+    entrarTunel(
+    "TÚNEL OCELOTE"
+    );
+
+}
+
+if(tiempo === 55){
+
+    cartelTunel();
+
+}
+
+if(tiempo === 70){
+
+    entrarTunel(
+    "TÚNEL TAPIR"
+    );
+
+}
+
+if(tiempo === 95){
+
+    entrarTunel(
+    "TÚNEL MONO AULLADOR"
+    );
+
+}
+
+if(tiempo === 120){
+
+    entrarTunel(
+    "TÚNEL DE LA LÍNEA",
+    60000
+    );
+
+}
+
+if(tiempo === 125){
+
+    advertenciaFantasma();
+
+    crearAlertaLateral(
+    "LUCES EXTRAÑAS",
+    "izq"
+    );
+
+    crearAlertaLateral(
+    "PELIGRO",
+    "der"
+    );
+
+}
+if(tiempo === 105){
+
+    crearAlertaLateral(
+    "NO DETENERSE",
+    "izq"
+    );
+
+}
+if(tiempo === 100){
+
+    crearAlertaLateral(
+    "SEÑAL PERDIDA",
+    "der"
+    );
+
+}
+
+if(tiempo === 130){
+
+    crearGhostTruck();
+
+}
+if(tiempo === 35){
+
+    advertirCamion();
+
+}
+
+tiempoTexto.textContent = tiempo;
+
+                if (tiempo % 15 === 0) {
+
+                    velocidadTruck += 1;
+
+                    velocidadTexto.textContent = velocidadTruck;
+                    const nuevaVelocidad =
+                Math.max(0.15, 0.5 - (velocidadTruck * 0.02));
+
+                lineas.forEach(linea => {
+
+                    linea.style.animationDuration =
+                    nuevaVelocidad + "s";
+
+});
+                }
+
+            }, 1000);
+
+            document.addEventListener("keydown", (e) => {
+
+                if (e.key === "ArrowLeft" && carril > 0) {
+                    carril--;
+                }
+
+                if (e.key === "ArrowRight" && carril < 2) {
+                    carril++;
+                }
+
+                player.style.left = posiciones[carril] + "px";
+
+            });
+});
+function verificarColision() {
+
+                const motoRect = player.getBoundingClientRect();
+                const truckRect = truck.getBoundingClientRect();
+
+                if (
+                    motoRect.left < truckRect.right &&
+                    motoRect.right > truckRect.left &&
+                    motoRect.top < truckRect.bottom &&
+                    motoRect.bottom > truckRect.top
+                ) {
+                    sonidoMotor.pause();
+
+                    sonidoMotor.currentTime = 0;
+                    alert("GAME OVER");
+                    if(tiempo > record){
+
+                    localStorage.setItem(
+                    "record",
+                    tiempo
+                    );
+
+}
+                    location.reload();
+
+                }
+
+            }
+ function crearTruck() {
+
+if(peleaGhost){
+    return;
+}
+               
+ truck = document.createElement("div");
+
+truck.classList.add("truck");
+const camiones = [
+
+    "t800blue.png",
+    "t800green.png",
+    "t800red.png",
+    "t800grey.png"
+
+];
+truck.style.backgroundImage =
+'url("' +
+camiones[
+Math.floor(Math.random() * camiones.length)
+] +
+'")';
+
+truck.style.backgroundSize =
+"contain";
+
+truck.style.backgroundRepeat =
+"no-repeat";
+
+truck.style.backgroundPosition =
+"center";
+
+truck.style.backgroundColor =
+"transparent";
+
+const carrilAleatorio =
+Math.floor(Math.random() * 3);
+
+truck.dataset.carril =
+carrilAleatorio;
+
+truck.style.left = (posiciones[carrilAleatorio] - 10) + "px";
+
+road.appendChild(truck);
+
+moverTruck();
+}
+
+function moverTruck() {
+
+let y = -150;
+
+const intervalo = setInterval(() => {
+
+y += velocidadTruck;
+
+truck.style.top = y + "px";
+
+verificarColision();
+
+if (y > window.innerHeight) {
+
+truck.remove();
+
+clearInterval(intervalo);
+
+setTimeout(() => {
+
+    crearTruck();
+                    
+        }, 2000);
+
+     }
+
+    }, 20);
+
+}
+
+function crearMoneda() {
+
+    if(document.querySelector(".coin")){
+        return;
+    }
+
+    moneda = document.createElement("div");
+
+    moneda.classList.add("coin");
+
+    let carrilAleatorio;
+
+    do{
+
+        carrilAleatorio =
+        Math.floor(Math.random() * 3);
+
+    }while(
+        truck &&
+        carrilAleatorio ==
+        Number(truck.dataset.carril)
+    );
+
+    moneda.style.left =
+    (posiciones[carrilAleatorio] + 10) + "px";
+
+    road.appendChild(moneda);
+
+    moverMoneda();
+
+}
+function moverMoneda() {
+
+    let y = -50;
+
+    const intervalo = setInterval(() => {
+
+        if(!moneda){
+
+            clearInterval(intervalo);
+            return;
+
+        }
+
+        y += velocidadTruck;
+
+        moneda.style.top = y + "px";
+
+        verificarMoneda();
+
+        if(y > window.innerHeight){
+
+            moneda.remove();
+
+            moneda = null;
+
+            clearInterval(intervalo);
+
+            setTimeout(() => {
+
+                crearMoneda();
+
+            }, 3000);
+
+        }
+
+    }, 20);
+
+}
+function verificarMoneda() {
+
+    if(!moneda) return;
+
+    const motoRect =
+    player.getBoundingClientRect();
+
+    const monedaRect =
+    moneda.getBoundingClientRect();
+
+    if(
+
+        motoRect.left < monedaRect.right &&
+        motoRect.right > monedaRect.left &&
+        motoRect.top < monedaRect.bottom &&
+        motoRect.bottom > monedaRect.top
+
+    ){
+
+    monedas++;
+
+    monedasTexto.textContent = monedas;
+
+    localStorage.setItem(
+    "monedas",
+    monedas
+    );
+
+    moneda.remove();
+
+    moneda = null;
+
+    setTimeout(() => {
+
+    crearMoneda();
+
+    }, 1000);
+
+}
+
+}
+function entrarTunel(nombre,duracion = 10000){
+
+    sonidoTunel.play();
+    sonidoTunel.volume = 1.0;
+
+    enTunel = true;
+
+    mensajeTunel.textContent =
+    "ENTRANDO A " + nombre;
+
+    mensajeTunel.style.display = "block";
+
+    setTimeout(() => {
+        mensajeTunel.style.display = "none";
+    },3000);
+
+    tunelEntrada.style.transition = "none";
+    tunelEntrada.style.top = "-180px";
+
+    setTimeout(() => {
+
+        tunelEntrada.style.transition =
+        "2s linear";
+
+        tunelEntrada.style.top =
+        "100vh";
+
+    },50);
+
+    setTimeout(() => {
+
+        road.style.background = "#222";
+        overlayTunel.style.opacity = "0.55";
+
+    },2000);
+
+    setTimeout(() => {
+
+        enTunel = false;
+
+        road.style.background = "#555";
+        overlayTunel.style.opacity = "0";
+
+        sonidoTunel.pause();
+        sonidoTunel.currentTime = 0;
+
+    },duracion);
+
+}
+function crearPolicia(){
+
+    policia = document.createElement("div");
+
+    policia.classList.add("policia");
+
+    const carrilesPolicia = [0, 2];
+    const carrilAleatorio =
+    carrilesPolicia[
+        Math.floor(Math.random() * 2)
+    ];
+
+    policia.style.left =
+    posiciones[carrilAleatorio] + "px";
+
+    road.appendChild(policia);
+
+    moverPolicia();
+
+}
+function moverPolicia(){
+
+    let y = -100;
+
+    const intervalo = setInterval(() => {
+
+        if(!policia){
+
+            clearInterval(intervalo);
+            return;
+
+        }
+
+        y += velocidadTruck;
+
+        policia.style.top = y + "px";
+
+        verificarPolicia();
+
+        if(y > window.innerHeight){
+
+            policia.remove();
+
+            policia = null;
+
+            clearInterval(intervalo);
+
+            setTimeout(() => {
+
+            if(!enTunel){
+
+            crearPolicia();
+
+            }
+
+        },15000);
+
+        }
+
+    },20);
+
+}
+function verificarPolicia(){
+
+    if(!policia) return;
+
+    const motoRect =
+    player.getBoundingClientRect();
+
+    const policiaRect =
+    policia.getBoundingClientRect();
+
+    if(
+
+        motoRect.left < policiaRect.right &&
+        motoRect.right > policiaRect.left &&
+        motoRect.top < policiaRect.bottom &&
+        motoRect.bottom > policiaRect.top
+
+    ){
+
+        alert("La Policía te detuvo");
+        gameover("La Policía te detuvo");
+        
+
+    }
+
+}
+function crearArbol(){
+    if(enTunel){
+    return;
+    }
+    arbol = document.createElement("div");
+
+    arbol.classList.add("arbol");
+
+    const carrilesArbol = [0, 2];
+
+    const carrilAleatorio =
+    carrilesArbol[
+        Math.floor(Math.random() * 2)
+    ];
+
+    arbol.style.left =
+    posiciones[carrilAleatorio] + "px";
+
+    road.appendChild(arbol);
+
+    moverArbol();
+
+}
+function moverArbol(){
+
+    let y = -100;
+
+    const intervalo = setInterval(() => {
+
+        if(!arbol){
+
+            clearInterval(intervalo);
+            return;
+
+        }
+
+        y += velocidadTruck;
+
+        arbol.style.top = y + "px";
+
+        verificarArbol();
+
+        if(y > window.innerHeight){
+
+            arbol.remove();
+
+            arbol = null;
+
+            clearInterval(intervalo);
+
+            setTimeout(() => {
+
+            if(!enTunel){
+
+                crearArbol();
+
+            }
+
+        },15000);
+
+        }
+
+    },20);
+
+}
+function verificarArbol(){
+
+    if(!arbol) return;
+
+    const motoRect =
+    player.getBoundingClientRect();
+
+    const arbolRect =
+    arbol.getBoundingClientRect();
+
+    if(
+
+        motoRect.left < arbolRect.right &&
+        motoRect.right > arbolRect.left &&
+        motoRect.top < arbolRect.bottom &&
+        motoRect.bottom > arbolRect.top
+
+    ){
+
+        alert("Chocaste contra un árbol");
+        gameover("Chocaste contra un árbol");
+        
+
+    }
+
+}
+function crearDerrumbe(){
+
+    if(enTunel){
+        return;
+    }
+
+    derrumbe = document.createElement("div");
+
+    derrumbe.classList.add("derrumbe");
+
+    const lado =
+    Math.floor(Math.random() * 2);
+
+    if(lado === 0){
+
+        derrumbe.style.left =
+        posiciones[0] + "px";
+
+    }else{
+
+        derrumbe.style.left =
+        posiciones[1] + "px";
+
+    }
+
+    road.appendChild(derrumbe);
+    alertaCamion.textContent =
+    "⚠ DERRUMBE REPORTADO";
+
+    alertaCamion.style.display =
+    "block";
+
+    setTimeout(() => {
+
+    alertaCamion.style.display =
+    "none";
+
+    },2000);
+    moverDerrumbe();
+
+}
+function moverDerrumbe(){
+
+    let y = -100;
+
+    const intervalo = setInterval(() => {
+
+        if(!derrumbe){
+
+            clearInterval(intervalo);
+            return;
+
+        }
+
+        y += velocidadTruck;
+
+        derrumbe.style.top = y + "px";
+
+        verificarDerrumbe();
+
+        if(y > window.innerHeight){
+
+            derrumbe.remove();
+
+            derrumbe = null;
+
+            clearInterval(intervalo);
+
+            setTimeout(() => {
+
+            if(!enTunel){
+
+            crearDerrumbe();
+
+            }
+
+            },20000);
+        }
+
+    },20);
+
+}
+function verificarDerrumbe(){
+
+    if(!derrumbe) return;
+
+    const motoRect =
+    player.getBoundingClientRect();
+
+    const derrumbeRect =
+    derrumbe.getBoundingClientRect();
+
+    if(
+
+        motoRect.left < derrumbeRect.right &&
+        motoRect.right > derrumbeRect.left &&
+        motoRect.top < derrumbeRect.bottom &&
+        motoRect.bottom > derrumbeRect.top
+
+    ){
+
+        alert("Te estrellaste contra un derrumbe");
+        gameover("Te estrellaste contra un derrumbe");
+
+    }
+
+}
+function cartelTunel(){
+
+    const textos = [
+
+        "SOS",
+        "REDUZCA",
+        "EMERGENCIA",
+        "14 KM",
+        "NO ADELANTAR",
+        "PRECAUCIÓN"
+
+    ];
+
+    let cantidad = 0;
+
+    const intervalo = setInterval(() => {
+
+        const cartel =
+        document.createElement("div");
+
+cartel.classList.add("cartel");
+
+const texto = textos[
+    Math.floor(
+        Math.random() *
+        textos.length
+    )
+];
+
+cartel.textContent = texto;
+
+if(
+    texto === "SOS" ||
+    texto === "EMERGENCIA"
+){
+
+    cartel.style.background = "#c62828";
+    cartel.style.color = "white";
+
+}
+else if(
+    texto === "PRECAUCIÓN" ||
+    texto === "NO ADELANTAR"
+){
+
+    cartel.style.background = "#fdd835";
+    cartel.style.color = "black";
+
+}
+else{
+
+    cartel.style.background = "white";
+    cartel.style.color = "black";
+
+}
+if(cantidad % 2 === 0){
+
+cartel.style.left = "-170px";
+
+}else{
+
+cartel.style.left = "450px";
+
+}
+
+    
+
+        road.appendChild(cartel);
+
+        let y = -80;
+
+        const mover =
+        setInterval(() => {
+
+            y += velocidadTruck;
+
+            cartel.style.top =
+            y + "px";
+
+            if(y > window.innerHeight){
+
+                cartel.remove();
+                clearInterval(mover);
+
+            }
+
+        },20);
+
+        cantidad++;
+
+        if(cantidad >= 30){
+
+            clearInterval(intervalo);
+
+        }
+
+    },300);
+
+}
+function advertenciaFantasma(){
+
+    alertaCamion.textContent =
+    "⚠ LUCES EXTRAÑAS DETECTADAS";
+
+    alertaCamion.style.display =
+    "block";
+
+    setTimeout(() => {
+
+        alertaCamion.style.display =
+        "none";
+
+    },3000);
+
+}
+function avisoCarrilGhost(carril){
+
+    alertaCamion.style.display =
+    "block";
+
+    if(carril === 0){
+
+        alertaCamion.textContent =
+        "⚠ GHOST TRUCK IZQUIERDA";
+
+    }
+
+    if(carril === 1){
+
+        alertaCamion.textContent =
+        "⚠ GHOST TRUCK CENTRO";
+
+    }
+
+    if(carril === 2){
+
+        alertaCamion.textContent =
+        "⚠ GHOST TRUCK DERECHA";
+
+    }
+
+    setTimeout(() => {
+
+        alertaCamion.style.display =
+        "none";
+
+    },1000);
+
+}
+
+function crearAlertaLateral(texto,lado){
+
+    const alerta =
+    document.createElement("div");
+
+    alerta.classList.add(
+    "alertaLateral"
+    );
+
+    alerta.textContent = texto;
+
+    if(lado === "izq"){
+
+    alerta.style.left = "calc(50% - 380px)";
+
+    }else{
+
+    alerta.style.left = "calc(50% + 240px)";
+
+    }
+
+    document.body.appendChild(alerta);
+
+    let y = -80;
+
+    const mover = setInterval(() => {
+
+        y += velocidadTruck + 5;
+
+        alerta.style.top =
+        y + "px";
+
+        if(y > window.innerHeight){
+
+            alerta.remove();
+            clearInterval(mover);
+
+        }
+
+    },20);
+
+}
+function crearGhostTruck(){
+sonidoTruck.currentTime = 0;
+
+sonidoTruck.volume = 0.5;
+
+sonidoTruck.play();
+document.body.style.animation =
+"sacudir 0.2s 10";
+setTimeout(() => {
+
+    document.body.style.animation = "";
+
+},2000);
+    vidaBoss.style.display = "block";
+
+    vidaBossFill.style.width = "100%";
+    if(arbol){
+
+    arbol.remove();
+    arbol = null;
+
+}
+
+if(policia){
+
+    policia.remove();
+    policia = null;
+
+}
+
+if(derrumbe){
+
+    derrumbe.remove();
+    derrumbe = null;
+
+}
+
+if(moneda){
+
+    moneda.remove();
+    moneda = null;
+
+}
+
+    peleaGhost = true;
+    
+    vidaBoss.style.display = "block";
+if(truck){
+
+    truck.remove();
+    truck = null;
+
+}
+    ghostTruck =
+    document.createElement("div");
+
+    ghostTruck.classList.add(
+    "ghostTruck"
+    );
+
+    ghostTruck.style.left =
+    posiciones[1] + "px";
+
+    road.appendChild(
+    ghostTruck
+    );
+
+    moverGhostTruck();
+}
+function moverGhostTruck(){
+
+    let y = window.innerHeight;
+
+    ghostBajando = false;
+
+    const intervalo = setInterval(() => {
+
+        if(!ghostTruck){
+
+            clearInterval(intervalo);
+            return;
+
+        }
+
+        if(!ghostBajando){
+
+            y -= velocidadTruck + 5;
+
+        }else{
+
+            y += velocidadTruck + 8;
+
+        }
+
+        ghostTruck.style.top =
+        y + "px";
+
+        verificarGhostTruck();
+
+        if(y < -250 && !ghostBajando){
+
+            ghostBajando = true;
+
+            const carrilAleatorio =
+            Math.floor(Math.random() * 3);
+
+            ghostTruck.style.left =
+            (posiciones[carrilAleatorio] - 20)
+            + "px";
+
+        }
+
+        if(
+            y > window.innerHeight &&
+            ghostBajando
+        ){
+
+            ataquesGhost++;
+
+            vidaBossFill.style.width =
+            (100 - (ataquesGhost * 16.6))
+            + "%";
+
+            if(ataquesGhost >= 6){
+
+                ghostDerrotado = true;
+
+                peleaGhost = false;
+
+                vidaBoss.style.display = "none";
+
+                sonidoTruck.pause();
+                sonidoTruck.currentTime = 0;
+
+                sonidoMotor.pause();
+                sonidoMotor.currentTime = 0;
+
+                ghostTruck.remove();
+
+                ghostTruck = null;
+
+                clearInterval(intervalo);
+
+                salidaTunelEpica();
+
+                return;
+            }
+
+            y = window.innerHeight;
+
+            ghostBajando = false;
+
+        }
+
+    },20);
+
+}
+function verificarGhostTruck(){
+
+    if(!ghostTruck) return;
+
+    if(!ghostBajando) return;
+
+    const motoRect =
+    player.getBoundingClientRect();
+
+    const ghostRect =
+    ghostTruck.getBoundingClientRect();
+
+    if(
+
+        motoRect.left < ghostRect.right &&
+        motoRect.right > ghostRect.left &&
+        motoRect.top < ghostRect.bottom &&
+        motoRect.bottom > ghostRect.top
+
+    ){
+
+        alert(
+        "EL GHOST TRUCK TE ALCANZÓ"
+        );
+
+        
+
+    }
+
+}
+
+function victoriaTunel(){
+
+    mensajeTunel.textContent =
+    "HAS SOBREVIVIDO AL GHOST TRUCK";
+
+    mensajeTunel.style.display =
+    "block";
+
+    setTimeout(() => {
+
+        mensajeTunel.style.display =
+        "none";
+
+        salidaTunel();
+
+    },4000);
+
+}
+function mostrarFinal(){
+sonidoTruck.pause();
+sonidoTruck.currentTime = 0;
+
+sonidoMotor.pause();
+sonidoMotor.currentTime = 0;
+
+sonidoTunel.pause();
+sonidoTunel.currentTime = 0;
+    juegoTerminado = true;
+
+    const final = document.createElement("div");
+
+    final.style.position = "fixed";
+    final.style.top = "0";
+    final.style.left = "0";
+    final.style.width = "100%";
+    final.style.height = "100%";
+    final.style.background = "rgba(0,0,0,0.9)";
+    final.style.color = "white";
+    final.style.display = "flex";
+    final.style.flexDirection = "column";
+    final.style.justifyContent = "center";
+    final.style.alignItems = "center";
+    final.style.zIndex = "99999";
+
+    final.innerHTML = `
+    <h1>MISIÓN COMPLETADA</h1>
+    <h2>HAS CRUZADO EL TÚNEL DE LA LÍNEA</h2>
+    <p>Bienvenido al Tolima</p>
+    <p>Tiempo: ${tiempo} segundos</p>
+    <button onclick="location.reload()">
+    VOLVER AL MENÚ
+    </button>
+    `;
+
+    document.body.appendChild(final);
+
+}
+function ganarJuego(){
+
+    clearInterval(cronometro);
+
+    alert(
+    "🏆 HAS CRUZADO LA LÍNEA\n\nMISIÓN COMPLETADA"
+    );
+
+    location.reload();
+
+}
+
+function curvaCarretera(){
+
+    curvaActiva = true;
+
+    road.style.transform =
+    "rotate(3deg)";
+
+    setTimeout(() => {
+
+        road.style.transform =
+        "rotate(-3deg)";
+
+    },3000);
+
+    setTimeout(() => {
+
+        road.style.transform =
+        "rotate(0deg)";
+
+        curvaActiva = false;
+
+    },6000);
+
+}
+
+function abrirTienda(){
+
+    let opcion = prompt(
+        "TIENDA\n\n" +
+        "1. Crypton 110 - 500 monedas\n" +
+        "2. MT-09 - 1500 monedas\n\n" +
+        "Tus monedas: " + monedas
+    );
+
+    if(opcion === "1"){
+
+        if(cryptonComprada){
+
+            motoActual = "crypton";
+            player.style.backgroundImage =
+            'url("crypton110.png")';
+
+            alert("Crypton equipada");
+
+            return;
+        }
+
+        if(monedas >= 500){
+
+            monedas -= 500;
+
+            localStorage.setItem(
+            "cryptonComprada",
+            "si"
+            );
+
+            cryptonComprada = true;
+
+            sonidoMotor.pause();
+
+            sonidoMotor = sonidoCrypton;
+
+            sonidoMotor.play();
+
+            alert("Compraste la Crypton 110");
+            localStorage.setItem(
+            "motoActual",
+            "crypton"
+            );
+        }else{
+
+            alert("No tienes suficientes monedas");
+        }
+    }
+
+    if(opcion === "2"){
+
+        if(mt09Comprada){
+
+            motoActual = "mt09";
+            player.style.backgroundImage =
+            'url("mt09.png")';
+            alert("MT-09 equipada");
+
+            return;
+        }
+
+        if(monedas >= 1500){
+
+            monedas -= 1500;
+
+            localStorage.setItem(
+            "mt09Comprada",
+            "si"
+            );
+
+            mt09Comprada = true;
+
+            sonidoMotor.pause();
+
+            sonidoMotor = sonidoMT09;
+
+            sonidoMotor.play();
+
+            alert("Compraste la MT-09");
+            localStorage.setItem(
+            "motoActual",
+            "mt09"
+);
+        }else{
+
+            alert("No tienes suficientes monedas");
+        }
+    }
+}
+function salidaTunel(){
+
+    mensajeTunel.textContent =
+    "BIENVENIDO AL TOLIMA";
+
+    mensajeTunel.style.display =
+    "block";
+
+    setTimeout(() => {
+        mensajeTunel.style.display =
+        "none";
+    },3000);
+
+    tunelEntrada.style.transition =
+    "none";
+
+    tunelEntrada.style.top =
+    "-180px";
+
+    setTimeout(() => {
+
+        tunelEntrada.style.transition =
+        "2s linear";
+
+        tunelEntrada.style.top =
+        "100vh";
+
+    },50);
+
+    overlayTunel.style.background =
+    "white";
+
+    overlayTunel.style.opacity =
+    "0.8";
+
+    setTimeout(() => {
+
+        overlayTunel.style.opacity =
+        "0";
+
+    },2000);
+
+}
+function salidaTunelEpica(){
+
+    mensajeTunel.textContent =
+    "BIENVENIDO AL TOLIMA";
+
+    mensajeTunel.style.display =
+    "block";
+
+    crearAlertaLateral(
+    "IBAGUÉ 20 KM",
+    "der"
+    );
+
+    overlayTunel.style.background =
+    "white";
+
+    overlayTunel.style.opacity =
+    "0.9";
+
+    tunelEntrada.style.top =
+    "-250px";
+
+    setTimeout(() => {
+
+        tunelEntrada.style.top =
+        "0px";
+
+    },100);
+
+    setTimeout(() => {
+
+        tunelEntrada.style.top =
+        "100vh";
+
+    },1500);
+
+    setTimeout(() => {
+
+        overlayTunel.style.opacity =
+        "0";
+
+        mensajeTunel.style.display =
+        "none";
+
+    },3500);
+
+    setTimeout(() => {
+
+        mostrarFinal();
+
+    },5000);
+
+}
+function gameOver(mensaje){
+
+    sonidoMotor.pause();
+    sonidoMotor.currentTime = 0;
+
+    sonidoTruck.pause();
+    sonidoTruck.currentTime = 0;
+
+    sonidoTunel.pause();
+    sonidoTunel.currentTime = 0;
+
+    clearInterval(cronometro);
+
+    alert(mensaje);
+
+    location.reload();
+
+}
+</script>
+
+</body>
+
+</html>
